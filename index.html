@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Steganography - PVD Method</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="shortcut icon" href="img/logo.png" type="image/x-icon" />
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              clifford: "#da373d",
+              primary: "#93e002",
+              secondary: "#fff",
+              dark: "#1e293b",
+            },
+            fontFamily: {
+              inter: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Style -->
+    <style>
+      .indicator {
+        transition: left 0.4s;
+      }
+    </style>
+  </head>
+  <body class="text-dark font-inter bg-slate-200">
+    <div class="container w-3/5 mx-auto mb-14">
+      <!-- Header -->
+      <div class="my-10">
+        <h1
+          class="text-primary font-bold text-3xl sm:text-5xl text-center mb-6"
+        >
+          <span class="text-dark">Welcome to PDV</span> Steganography
+        </h1>
+        <p class="text-center text-sm sm:text-base">
+          Ayo 🫵, lindungi pesan rahasia anda dengan menyembunyikannya dalam
+          gambar secara tak kasat mata!
+        </p>
+      </div>
+      <div>
+        <!-- tab-list -->
+        <div
+          role="tablist"
+          aria-label="tabs"
+          class="relative w-full mx-auto h-12 bg-secondary grid grid-cols-2 items-center px-[3px] rounded-full overflow-hidden shadow-2xl transition"
+        >
+          <div
+            class="absolute indicator h-11 my-auto top-0 bottom-0 left-0 rounded-full bg-primary shadow-md w-32"
+          ></div>
+          <button
+            role="tab"
+            aria-selected="true"
+            aria-controls="panel-1"
+            id="tab-1"
+            tabindex="0"
+            class="relative block h-10 px-6 tab rounded-full"
+          >
+            <span class="text-dark font-bold tab-text">Embeding</span>
+          </button>
+          <button
+            role="tab"
+            aria-selected="false"
+            aria-controls="panel-2"
+            id="tab-2"
+            tabindex="-1"
+            class="relative block h-10 px-6 tab rounded-full"
+          >
+            <span class="text-dark font-bold tab-text">Extracting</span>
+          </button>
+        </div>
+        <!-- tab-content -->
+        <div class="mt-6 relative">
+          <!-- Stegano-tab -->
+          <div
+            role="tabpanel"
+            id="panel-1"
+            class="tab-panel px-8 py-10 transition duration-300 visible opacity-100 rounded-3xl bg-secondary shadow-2xl"
+          >
+            <!-- STEGANO FORM -->
+            <form class="mb-7 relative">
+              <!-- INPUT IMAGE -->
+              <label for="imageInput" class="font-bold block mb-2">
+                Cover Image <span class="text-[10px] font-normal">(Minimal 1 MB)</span>
+              </label>
+              <input
+                class="absolute w-full h-48 z-10 opacity-0 cursor-pointer"
+                type="file"
+                id="imageInput"
+                name="imageInput"
+                accept="image/*"
+                required
+              />
+              <!-- COVER IMAGE INPUT -->
+              <div
+                id="imageInputDisplay"
+                class="flex justify-center items-center w-full h-48 border-2 border-dashed border-primary rounded-lg bg-slate-50 mb-7"
+              >
+                <div class="text-center">
+                  <img
+                    class="mb-3 block mx-auto"
+                    src="img/image-icon.png"
+                    width="50"
+                    alt="icon"
+                  />
+                  <p class="font-semibold">
+                    Drag and drop or click here to upload image
+                  </p>
+                  <p class="font-light">Upload any images from device</p>
+                </div>
+              </div>
+              <!-- INPUT PESAN -->
+              <label for="imageInput" class="font-bold block mb-2">
+                Pesan Rahasia
+              </label>
+              <textarea
+                id="messageInput"
+                placeholder="Enter the message to hide"
+                class="w-full h-36 mb-5 border-2 border-primary rounded-lg font-medium p-3 resize-none focus:outline-lime-600"
+                required
+              ></textarea>
+              <!-- BUTTON HIDE MESSAGE -->
+              <button
+                id="hideMessageButton"
+                type="button"
+                onclick="hideMessage()"
+                class="w-full bg-primary py-2 rounded-full text-white text-lg font-bold tracking-widest hover:bg-opacity-60 transition duration-500"
+              >
+                Hide Message
+              </button>
+            </form>
+            <!-- OUTPUT STEGANO -->
+            <div
+              class="w-full min-h-72 border-2 border-dashed border-primary rounded-lg text-center"
+            >
+              <span
+                >Image output will be shown here. Click image to download</span
+              >
+              <canvas id="canvas" style="display: none"></canvas>
+              <button
+                id="downloadButton"
+                onclick="downloadImage()"
+                class="mx-auto"
+              >
+                <img id="resultImage" class="w-full" />
+              </button>
+            </div>
+          </div>
+
+          <!-- Extract-tab -->
+          <div
+            role="tabpanel"
+            id="panel-2"
+            class="absolute top-0 invisible opacity-0 tab-panel px-8 py-10 transition duration-300 w-full rounded-3xl bg-secondary shadow-2xl"
+          >
+            <form class="mb-7">
+              <!-- Stego Image Input -->
+              <div class="mb-7 relative">
+                <label for="stegoImageInput" class="font-bold block mb-2">
+                  Stegano Image
+                </label>
+
+                <input
+                  class="absolute w-full h-48 z-10 opacity-0 cursor-pointer"
+                  type="file"
+                  id="stegoImageInput"
+                  name="stegoImageInput"
+                  accept="image/*"
+                />
+                <!-- INPUT IMAGE COVER -->
+                <div
+                  id="stegoInputDisplay"
+                  class="flex justify-center items-center w-full h-48 border-2 border-dashed border-primary rounded-lg bg-slate-50"
+                >
+                  <div class="text-center">
+                    <img
+                      class="mb-3 block mx-auto"
+                      src="img/image-icon.png"
+                      width="50"
+                      alt="icon"
+                    />
+                    <p class="font-semibold">
+                      Drag and drop or click here to upload image
+                    </p>
+                    <p class="font-light">Upload any images from device</p>
+                  </div>
+                </div>
+              </div>
+              <!-- BUTTON -->
+              <button
+                type="button"
+                onclick="extractMessage()"
+                id="extractButton"
+                class="w-full bg-primary py-3 rounded-full text-white text-lg font-bold tracking-widest hover:bg-opacity-60 transition duration-500"
+              >
+                Extract
+              </button>
+            </form>
+
+            <!-- OUTPUT EXTRACT MESSAGE -->
+            <label class="font-bold block mb-2"> Extracted Message </label>
+            <textarea
+              id="extractedMessage"
+              placeholder="Extracted message will be shown here"
+              class="w-full h-36 mb-5 border-2 border-primary rounded-lg font-medium p-3 resize-none focus:outline-lime-600"
+              readonly
+            ></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Javascript -->
+    <script src="script.js"></script>
+  </body>
+</html>
