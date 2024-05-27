@@ -81,6 +81,16 @@ document.addEventListener("DOMContentLoaded", function () {
   function hideMessage() {
     const imageInput = document.getElementById("imageInput");
     const messageInput = document.getElementById("messageInput");
+    //Checking input
+    if (!imageInput.files[0]) {
+      alert("Please select an image.");
+      return;
+    }
+    if (!messageInput.value) {
+      alert("Please enter a message.");
+      return;
+    }
+
     const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d");
     const reader = new FileReader();
@@ -143,6 +153,11 @@ document.addEventListener("DOMContentLoaded", function () {
   // Fungsi ekstraksi pesan
   function extractMessage() {
     const stegoImageInput = document.getElementById("stegoImageInput");
+    //Checking input
+    if (!stegoImageInput.files[0]) {
+      alert("Please select an image.");
+      return;
+    }
     const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d");
     const reader = new FileReader();
